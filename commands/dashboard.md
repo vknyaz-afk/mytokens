@@ -1,6 +1,5 @@
 ---
 description: MyTokens — 5-hour and weekly usage, limit forecast and a dashboard with charts
-allowed-tools: Bash(python3:*), Bash(python:*), Bash(py:*)
 ---
 Run the MyTokens script with the first interpreter that works — `python3`, then `python`, then `py -3`
 (on Windows `python3` may be a Microsoft Store placeholder that prints "Python was not found"; skip it):

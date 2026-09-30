@@ -178,7 +178,7 @@ function srcText(src) { if (!src) return '';
   return t('src_' + src.k); }
 
 /* ─── SVG helpers ─── */
-const NS = 'http://www.w3.org/2000/svg';
+const NS = (() => { const d = document.createElement('div'); d.innerHTML = '<svg></svg>'; return d.firstChild.namespaceURI; })();
 function el(tag, attrs, parent, text) { const e = document.createElementNS(NS, tag);
   for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; if (parent) parent.appendChild(e); return e; }
 function ticks(min, max, n = 5) { const span = (max - min) || 1, raw = span / n, mag = 10 ** Math.floor(Math.log10(raw)), r = raw / mag;
@@ -197,7 +197,7 @@ function timeFmt(span) { return ts => { const d = new Date(ts*1000);
 function lineChart(box, o) {
   box.innerHTML = ''; const W = box.clientWidth, Hh = o.height || 250, m = {l: 54, r: 14, t: 14, b: 26};
   if (W < 120) return;
-  const svg = el('svg', {viewBox: `0 0 ${W} ${Hh}`, height: Hh}, box);
+  const svg = el('svg', {viewBox: '0 0 ' + W + ' ' + Hh, height: Hh}, box);
   const xs = [], ys = [0];
   o.series.forEach(s => s.pts.forEach(p => { xs.push(p[0]); ys.push(p[1]); }));
   (o.vlines||[]).forEach(v => xs.push(v.x)); (o.hlines||[]).forEach(h => ys.push(h.y));
@@ -241,7 +241,7 @@ function interp(pts, x, step) { if (!pts.length || x < pts[0][0] || x > pts[pts.
 function barChart(box, o) {
   box.innerHTML = ''; const W = box.clientWidth, Hh = o.height || 240, m = {l: 54, r: 10, t: 14, b: 26};
   if (W < 120) return;
-  const svg = el('svg', {viewBox: `0 0 ${W} ${Hh}`, height: Hh}, box);
+  const svg = el('svg', {viewBox: '0 0 ' + W + ' ' + Hh, height: Hh}, box);
   const totals = o.cats.map((_, i) => o.series.reduce((a, s) => a + s.values[i], 0));
   const yT = ticks(0, Math.max(...totals, o.hline ? o.hline.y : 0) * 1.08 || 1), y1 = yT[yT.length-1];
   const Y = v => Hh - m.b - v / y1 * (Hh - m.t - m.b), band = (W - m.l - m.r) / o.cats.length, bw = Math.max(3, Math.min(28, band * 0.7));
@@ -385,20 +385,20 @@ function renderBlocks() {
 /* ─── top-up ─── */
 let unit = 'all';
 function renderTopup() {
-  const M = DATA.topup_models, colors = ['--s1', '--s2', '--s3', '--s4', '--s5'].map(cssv);
+  const mods = DATA.topup_models, colors = ['--s1', '--s2', '--s3', '--s4', '--s5'].map(cssv);
   // shortfall in tokens → what buying exactly those tokens on the current model costs
-  const curAll = M.find(m => m.current).usd_per_mtok;
+  const curAll = mods.find(m => m.current).usd_per_mtok;
   const needs = W.filter(w => w.overflow_tok).map(w => ({x: w.overflow_tok * curAll / 1e6, label: t('hk_' + w.id.replace(':', '_'))}));
   const xmax = Math.max(100, ...needs.map(n => n.x * 1.25));
   const perUsd = m => 1e6 / (unit === 'all' ? m.usd_per_mtok : m.usd_per_mtok_out);
-  const series = M.map((m, i) => ({name: m.name, color: colors[i], pts: [[0, 0], [xmax, xmax * perUsd(m)]]}));
-  const cur = M.find(m => m.current), markers = needs.map(n => ({x: n.x, y: n.x * perUsd(cur), color: cssv('--critical'), label: t('topup_to_reset', {usd: usd(n.x), w: n.label})}));
+  const series = mods.map((m, i) => ({name: m.name, color: colors[i], pts: [[0, 0], [xmax, xmax * perUsd(m)]]}));
+  const cur = mods.find(m => m.current), markers = needs.map(n => ({x: n.x, y: n.x * perUsd(cur), color: cssv('--critical'), label: t('topup_to_reset', {usd: usd(n.x), w: n.label})}));
   lineChart($('topup-chart'), {series, yFmt: tok, tipY: v => t('tokens_n', {n: tok(v)}), xmin: 0, xmax, xFmt: v => '$' + Math.round(v), tipX: v => '$' + v.toFixed(0), markers, height: 280});
-  legend('topup-leg', series.map((s, i) => [s.name + (M[i].current ? ' ★' : ''), s.color]));
+  legend('topup-leg', series.map((s, i) => [s.name + (mods[i].current ? ' ★' : ''), s.color]));
   const sess = win('session'), rate = sess && sess.rate_per_h > 0 ? sess.rate_per_h : (win('week')?.rate24_per_h || 0);
   const amounts = [...new Set([5, 10, 20, 50, 100, 200, ...needs.map(n => Math.ceil(n.x))])].sort((a, b) => a - b);
-  $('topup-table').innerHTML = `<tr><th>${t('th_amount')}</th>${M.map(m => `<th>${m.name}</th>`).join('')}<th>${t('th_hours')}</th></tr>` +
-    amounts.map(a => `<tr${needs.some(n => Math.ceil(n.x) === a) ? ' class="cur"' : ''}><td>$${a}</td>${M.map(m => `<td>${tok(a * perUsd(m))}</td>`).join('')}<td>${rate ? t('hours', {n: (a / rate).toFixed(1)}) : '—'}</td></tr>`).join('');
+  $('topup-table').innerHTML = `<tr><th>${t('th_amount')}</th>${mods.map(m => `<th>${m.name}</th>`).join('')}<th>${t('th_hours')}</th></tr>` +
+    amounts.map(a => `<tr${needs.some(n => Math.ceil(n.x) === a) ? ' class="cur"' : ''}><td>$${a}</td>${mods.map(m => `<td>${tok(a * perUsd(m))}</td>`).join('')}<td>${rate ? t('hours', {n: (a / rate).toFixed(1)}) : '—'}</td></tr>`).join('');
   $('topup-sub').textContent = unit === 'all' ? t('topup_sub_all', {model: cur.name, usd: usd(cur.usd_per_mtok)})
     : t('topup_sub_out', {model: cur.name, usd: usd(cur.usd_per_mtok_out)});
 }

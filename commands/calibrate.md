@@ -1,7 +1,6 @@
 ---
 description: Calibrate limits using the numbers shown in /usage (percent used and reset time)
 argument-hint: "session 37% resets 1:40pm, week 12% resets Oct 3 10am"
-allowed-tools: Bash(python3:*), Bash(python:*), Bash(py:*)
 ---
 The user passed the readings from /usage (or Settings → Usage): $ARGUMENTS
 

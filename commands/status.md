@@ -1,6 +1,5 @@
 ---
 description: MyTokens — short summary without opening the browser
-allowed-tools: Bash(python3:*), Bash(python:*), Bash(py:*)
 ---
 Run the MyTokens script with the first interpreter that works — `python3`, then `python`, then `py -3`
 (skip a Windows `python3` that prints "Python was not found"):

@@ -1,7 +1,6 @@
 ---
 name: mytokens
 description: Claude usage limits — how much of the 5-hour session and weekly limits is used, when they reset, when the user will run out at the current pace, how much extra usage costs, and how much the subscription saves versus API prices. Use when the user asks about their Claude limits, quota or usage, how much is left, when they will hit the limit, when it resets, or about buying extra usage. Works in every Claude app, from local Claude Code logs when possible and otherwise from the numbers on the Usage page.
-allowed-tools: Bash(python3:*), Bash(python:*), Bash(py:*)
 ---
 
 # MyTokens — Claude usage limits
