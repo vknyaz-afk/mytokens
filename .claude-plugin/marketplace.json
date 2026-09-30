@@ -1,0 +1,15 @@
+{
+  "name": "mytokens",
+  "owner": {
+    "name": "vknyaz-afk",
+    "url": "https://github.com/vknyaz-afk"
+  },
+  "description": "MyTokens — see how much of your Claude limits is left and when you'll run out",
+  "plugins": [
+    {
+      "name": "mytokens",
+      "source": "./",
+      "description": "How much of your Claude limits is left and when you'll hit the limit at your current pace"
+    }
+  ]
+}
