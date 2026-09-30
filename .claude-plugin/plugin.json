@@ -1,7 +1,7 @@
 {
   "name": "mytokens",
   "displayName": "MyTokens",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "How much of your Claude limits is left: 5-hour and weekly usage, when you'll hit the limit at your current pace, history, extra-usage prices and how much your plan saves versus API prices. Works in every Claude app; full mode in Claude Code with Python 3.",
   "author": {
     "name": "vknyaz-afk",
