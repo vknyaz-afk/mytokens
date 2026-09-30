@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <title>MyTokens</title>
+  <!-- a fuel-gauge style meter: how much of the limit is left. Gauge centre (128,165), radius 80 -->
+  <rect width="256" height="256" rx="56" fill="#16263d"/>
+  <path d="M48 165 A 80 80 0 0 1 208 165" fill="none" stroke="#2c4466" stroke-width="22" stroke-linecap="round"/>
+  <path d="M48 165 A 80 80 0 0 1 175 100.3" fill="none" stroke="#3987e5" stroke-width="22" stroke-linecap="round"/>
+  <circle cx="208" cy="165" r="11" fill="#e66767"/>
+  <line x1="128" y1="165" x2="157.4" y2="124.5" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="128" cy="165" r="16" fill="#ffffff"/>
+  <circle cx="128" cy="165" r="6" fill="#16263d"/>
+</svg>
