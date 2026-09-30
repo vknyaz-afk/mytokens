@@ -295,7 +295,7 @@ function renderValue() {
   $('value-card').innerHTML = `<h2>${t('value_title')}</h2><div class="value-row">${main}
     <div style="min-width:260px;max-width:560px">
       <p style="margin:0 0 6px;font-size:14px">${t('value_api', {usd: usd(api)})}</p>
-      ${plan ? `<dl class="rows"><dt>${t('value_plan')}</dt><dd>${t('plan_' + plan)}</dd></dl>` : ''}
+      ${plan ? `<dl class="rows"><dt>${t('value_plan')}</dt><dd>${t('plan_' + plan, {price: '$' + DATA.plan_prices[plan]})}</dd></dl>` : ''}
     </div></div>`;
 }
 function kpi(w) {
@@ -427,7 +427,7 @@ try { const saved = JSON.parse(localStorage.getItem('mytokens-plan') || 'null');
 function renderPlan() {
   document.querySelectorAll('.plan-sel').forEach(s => {
     s.innerHTML = (plan ? '' : `<option value="">${t('plan_choose')}</option>`) +
-      Object.keys(DATA.plan_prices).map(k => `<option value="${k}">${t('plan_' + k)}</option>`).join('');
+      Object.keys(DATA.plan_prices).map(k => `<option value="${k}">${t('plan_' + k, {price: '$' + DATA.plan_prices[k]})}</option>`).join('');
     s.value = plan || '';
     s.title = plan && plan !== DATA.plan ? t('plan_hint', {plan}) : '';
     s.onchange = () => { plan = s.value || null;

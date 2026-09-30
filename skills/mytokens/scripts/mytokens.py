@@ -713,7 +713,8 @@ def text_report(r):
             out.append(T("t_overflow", tok=fmt_tok(w["overflow_tok"])))
     cur = next(m for m in r["topup_models"] if m["current"])
     out.append("\n" + T("t_value_hdr"))
-    out.append(T("t_topup", model=cur["name"], a=fmt_tok(10 / cur["usd_per_mtok"] * 1e6),
+    money = lambda n: "$" + str(n)
+    out.append(T("t_topup", model=cur["name"], p10=money(10), p50=money(50), a=fmt_tok(10 / cur["usd_per_mtok"] * 1e6),
                         b=fmt_tok(50 / cur["usd_per_mtok"] * 1e6)))
     if r["plan_price"]:
         out.append(T("t_plan_value", api=fmt_usd(r["month_api_equiv"]), plan=fmt_usd(r["plan_price"])))
